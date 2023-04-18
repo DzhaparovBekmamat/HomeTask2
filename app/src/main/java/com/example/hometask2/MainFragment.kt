@@ -37,15 +37,15 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
             val pos = result.getInt("pos")
             noteAdapter.change(pos, note)
         }
-        add.setOnClickListener {
-            val addFragment = AddFragment()
+        sort.setOnClickListener {
+            val editText = getSearchText()
+            val addFragment = AddFragment.newInstance(editText)
             val fragmentTransaction = parentFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.main_fragment_container, addFragment)
                 .addToBackStack(null).commit()
         }
-        sort.setOnClickListener {
-            val editText = getSearchText()
-            val addFragment = AddFragment.newInstance(editText)
+        add.setOnClickListener {
+            val addFragment = AddFragment()
             val fragmentTransaction = parentFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.main_fragment_container, addFragment)
                 .addToBackStack(null).commit()

@@ -76,16 +76,6 @@ class AddFragment : Fragment() {
         }
     }
 
-    companion object {
-        fun newInstance(searchText: String): Fragment {
-            val addFragment = AddFragment()
-            val bundle = Bundle()
-            bundle.putString("searchText", searchText)
-            addFragment.arguments = bundle
-            return addFragment
-        }
-    }
-
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -100,6 +90,16 @@ class AddFragment : Fragment() {
                 e.printStackTrace()
                 imageUrl = data.data.toString()
             }
+        }
+    }
+
+    companion object {
+        fun newInstance(searchText: String): Fragment {
+            val addFragment = AddFragment()
+            val bundle = Bundle()
+            bundle.putString("searchText", searchText)
+            addFragment.arguments = bundle
+            return addFragment
         }
     }
 }

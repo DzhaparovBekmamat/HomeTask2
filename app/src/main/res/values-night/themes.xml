@@ -1,6 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.HomeTask2" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:forceDarkAllowed" tools:ignore="NewApi">false</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">#F2EFF4</item>
         <item name="colorPrimaryVariant">#F2EFF4</item>
