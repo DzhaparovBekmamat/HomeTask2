@@ -16,6 +16,7 @@
             android:id="@+id/image_view_add_fragment"
             android:layout_width="300dp"
             android:layout_height="300dp"
+            android:layout_marginTop="25dp"
             android:background="@drawable/image_add"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -26,11 +27,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="60dp"
-            android:layout_marginTop="15dp"
             android:background="@drawable/image_view"
-            android:hint="Title"
+            android:hint="Аталышы"
             android:padding="10dp"
-            app:layout_constraintTop_toBottomOf="@id/image_view_add_fragment" />
+            app:layout_constraintTop_toBottomOf="@id/image_view_add_fragment"
+            tools:ignore="HardcodedText" />
 
         <EditText
             android:id="@+id/second_edit_text_add_fragment"
@@ -39,9 +40,11 @@
             android:layout_marginHorizontal="60dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/image_view"
-            android:hint="Description"
+            android:hint="Баяндоо"
+            android:inputType="textAutoCorrect"
             android:padding="10dp"
-            app:layout_constraintTop_toBottomOf="@id/first_edit_text_add_fragment" />
+            app:layout_constraintTop_toBottomOf="@id/first_edit_text_add_fragment"
+            tools:ignore="HardcodedText" />
 
         <EditText
             android:id="@+id/third_edit_text_add_fragment"
@@ -50,9 +53,11 @@
             android:layout_marginHorizontal="60dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/image_view"
-            android:hint="Date"
+            android:hint="Датасы"
+            android:inputType="phone"
             android:padding="10dp"
-            app:layout_constraintTop_toBottomOf="@id/second_edit_text_add_fragment" />
+            app:layout_constraintTop_toBottomOf="@id/second_edit_text_add_fragment"
+            tools:ignore="HardcodedText" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_add_fragment"
@@ -61,9 +66,19 @@
             android:layout_marginHorizontal="60dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/button_add_fragment"
-            android:text="Add"
+            android:text="Кошуу"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/third_edit_text_add_fragment" />
+            android:textStyle="normal"
+            app:layout_constraintTop_toBottomOf="@id/third_edit_text_add_fragment"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/left_path"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -14,7 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class NoteAdapter(private val listener: MainFragment) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
-    private val list = ArrayList<Note>()
+    private val list: MutableList<Note> = ArrayList()
 
     @SuppressLint("NotifyDataSetChanged")
     fun addNote(note: Note) {
@@ -51,6 +51,13 @@ class NoteAdapter(private val listener: MainFragment) :
         return list.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun setList(list: MutableList<Note>) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val imageView: ImageView = view.findViewById(R.id.image_view_note_list)
         private val title: TextView = view.findViewById(R.id.title_note_list)
@@ -58,7 +65,7 @@ class NoteAdapter(private val listener: MainFragment) :
         private val date: TextView = view.findViewById(R.id.date_note_list)
         private val delete: Button = view.findViewById(R.id.button_remove)
         private val editButton: Button = view.findViewById(R.id.button_edit)
-
+        private val share: Button = view.findViewById(R.id.button_share)
         fun bind(position: Int) {
             title.text = list[position].title
             description.text = list[position].description
@@ -71,6 +78,10 @@ class NoteAdapter(private val listener: MainFragment) :
             editButton.setOnClickListener {
                 listener.edit(position, list[position])
             }
+            share.setOnClickListener {
+                listener.share(adapterPosition)
+            }
         }
     }
 }
+

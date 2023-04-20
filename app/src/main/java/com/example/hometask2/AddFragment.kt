@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.fragment.app.FragmentManager
 import java.io.IOException
 
 @Suppress("DEPRECATION")
@@ -28,6 +29,7 @@ class AddFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val back: Button = view.findViewById(R.id.back)
         val button: Button = view.findViewById(R.id.button_add_fragment)
         val title: EditText = view.findViewById(R.id.first_edit_text_add_fragment)
         val description: EditText = view.findViewById(R.id.second_edit_text_add_fragment)
@@ -35,7 +37,12 @@ class AddFragment : Fragment() {
         imageView = view.findViewById(R.id.image_view_add_fragment)
         pickImageFromGallery()
         val bundle = Bundle()
-        if (arguments != null) {
+        if (arguments != null && arguments?.getSerializable("searchText") != null) {
+            val text = arguments?.getString("searchText")
+            title.setText(text)
+            button.text = "Түзөтүү"
+        }
+        if (arguments != null && arguments?.getSerializable("editNote") != null) {
             button.text = "Edit"
             val note = arguments?.getSerializable("editNote") as Note
             title.setText(note.title)
@@ -46,6 +53,7 @@ class AddFragment : Fragment() {
                 val descriptionString = description.text.toString()
                 val dateString = date.text.toString()
                 val edit = Note(imageUrl, titleString, descriptionString, dateString)
+                (requireActivity() as MainActivity).list.add(note)
                 bundle.putSerializable("edit", edit)
                 val pos = arguments?.getInt("position")
                 if (pos != null) {
@@ -64,6 +72,12 @@ class AddFragment : Fragment() {
                 requireActivity().supportFragmentManager.setFragmentResult("note", bundle)
                 requireActivity().supportFragmentManager.popBackStack()
             }
+        }
+        back.setOnClickListener {
+            val mainFragment = MainFragment()
+            val fragmentManager: FragmentManager = parentFragmentManager
+            fragmentManager.beginTransaction().replace(R.id.add_fragment_container, mainFragment)
+                .addToBackStack(null).commit()
         }
     }
 

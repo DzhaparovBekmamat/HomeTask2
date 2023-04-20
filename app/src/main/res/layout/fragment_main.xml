@@ -19,7 +19,7 @@
             android:layout_margin="10dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/edit_text_shape"
-            android:hint="Search..."
+            android:hint="Издөө..."
             android:padding="10dp"
             app:layout_constraintEnd_toStartOf="@+id/button_sort"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,9 +40,9 @@
             android:layout_height="50dp"
             android:layout_margin="20dp"
             android:background="@drawable/button_add"
+            android:onClick="sortClick"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:onClick="sortClick"/>
+            app:layout_constraintRight_toRightOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -50,7 +50,20 @@
             android:layout_height="0dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_edit_text"
-            tools:listitem="@layout/note_list" />
+            app:layout_constraintTop_toBottomOf="@id/search_edit_text" />
+
+        <TextView
+            android:id="@+id/nothing_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ЭЧ НЕРСЕ ТАБЫЛГАН ЖОК :("
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="italic"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
