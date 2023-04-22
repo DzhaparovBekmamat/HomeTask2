@@ -28,6 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="60dp"
             android:background="@drawable/image_view"
+            android:drawableStart="@drawable/title"
+            android:drawablePadding="10dp"
             android:hint="Аталышы"
             android:padding="10dp"
             app:layout_constraintTop_toBottomOf="@id/image_view_add_fragment"
@@ -40,6 +42,8 @@
             android:layout_marginHorizontal="60dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/image_view"
+            android:drawableStart="@drawable/description"
+            android:drawablePadding="10dp"
             android:hint="Баяндоо"
             android:inputType="textAutoCorrect"
             android:padding="10dp"
@@ -47,12 +51,14 @@
             tools:ignore="HardcodedText" />
 
         <EditText
-            android:id="@+id/third_edit_text_add_fragment"
+            android:id="@+id/third_edit_text_add_fragment_date_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="60dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/image_view"
+            android:drawableStart="@drawable/date"
+            android:drawablePadding="10dp"
             android:hint="Датасы"
             android:inputType="phone"
             android:padding="10dp"
@@ -69,7 +75,7 @@
             android:text="Кошуу"
             android:textColor="@color/black"
             android:textStyle="normal"
-            app:layout_constraintTop_toBottomOf="@id/third_edit_text_add_fragment"
+            app:layout_constraintTop_toBottomOf="@id/third_edit_text_add_fragment_date_picker"
             tools:ignore="HardcodedText" />
 
         <androidx.appcompat.widget.AppCompatButton

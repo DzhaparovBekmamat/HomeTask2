@@ -2,6 +2,7 @@ package com.example.hometask2
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,6 +16,7 @@ import android.widget.ImageView
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import java.io.IOException
+import java.util.Calendar
 
 @Suppress("DEPRECATION")
 class AddFragment : Fragment() {
@@ -34,7 +36,10 @@ class AddFragment : Fragment() {
         val button: Button = view.findViewById(R.id.button_add_fragment)
         val title: EditText = view.findViewById(R.id.first_edit_text_add_fragment)
         val description: EditText = view.findViewById(R.id.second_edit_text_add_fragment)
-        val date: EditText = view.findViewById(R.id.third_edit_text_add_fragment)
+        val date: EditText = view.findViewById(R.id.third_edit_text_add_fragment_date_picker)
+        date.setOnClickListener {
+            showDatePickerDialog()
+        }
         imageView = view.findViewById(R.id.image_view_add_fragment)
         pickImageFromGallery()
         val bundle = Bundle()
@@ -79,6 +84,25 @@ class AddFragment : Fragment() {
         }
     }
 
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, yearSelected, monthSelected, dayOfMonth ->
+                val selectedDate = "$dayOfMonth/${monthSelected + 1}/$yearSelected"
+                val date = requireActivity().findViewById<EditText>(R.id.third_edit_text_add_fragment_date_picker)
+                date.setText(selectedDate)
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.show()
+    }
+
     @SuppressLint("IntentReset")
     private fun pickImageFromGallery() {
         imageView.setOnClickListener {
@@ -87,6 +111,7 @@ class AddFragment : Fragment() {
             startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
     }
+
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
