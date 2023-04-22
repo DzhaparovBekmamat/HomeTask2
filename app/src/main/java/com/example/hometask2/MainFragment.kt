@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 
 @Suppress("DEPRECATION")
@@ -20,6 +21,7 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
     private lateinit var add: Button
     private lateinit var sort: Button
     private lateinit var textView: TextView
+    private lateinit var editText: EditText
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         textView = view.findViewById(R.id.nothing_found)
@@ -27,6 +29,7 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
         add = view.findViewById(R.id.button_add)
         sort = view.findViewById(R.id.button_sort)
         noteAdapter = NoteAdapter(this)
+        editText = view.findViewById(R.id.search_edit_text)
         recyclerView.adapter = noteAdapter
         noteAdapter.setList((requireActivity() as MainActivity).list)
         requireActivity().supportFragmentManager.setFragmentResultListener(
@@ -34,6 +37,7 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
         ) { _, result ->
             val note = result.getSerializable("model") as Note
             noteAdapter.addNote(note)
+            checkItem()
         }
         requireActivity().supportFragmentManager.setFragmentResultListener(
             "editNote", this
@@ -41,21 +45,22 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
             val note = result.getSerializable("edit") as Note
             val pos = result.getInt("pos")
             noteAdapter.change(pos, note)
+            checkItem()
         }
         sort.setOnClickListener {
-            val editText = getSearchText()
-            val addFragment = AddFragment.newInstance(editText)
-            val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.main_fragment_container, addFragment)
-                .addToBackStack(null).commit()
+            val searchText = editText.text.toString()
+            val bundle = Bundle()
+            bundle.putString("searchText", searchText)
+            findNavController().navigate(R.id.addFragment, bundle)
         }
         add.setOnClickListener {
-            val addFragment = AddFragment()
-            val fragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.main_fragment_container, addFragment)
-                .addToBackStack(null).commit()
+            findNavController().navigate(R.id.addFragment)
         }
-        val itemCount = recyclerView.adapter?.itemCount ?: 0
+        checkItem()
+    }
+
+    private fun checkItem() {
+        val itemCount = noteAdapter.itemCount ?: 0
         if (itemCount == 0) {
             textView.visibility = View.VISIBLE
         } else {
@@ -72,7 +77,10 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
         val alertDialog = AlertDialog.Builder(requireContext())
         alertDialog.setTitle("Эскертүү!")
         alertDialog.setMessage("Чын эле жок кылгыңыз келеби?")
-        alertDialog.setPositiveButton("Өчүрүү") { _, _ -> noteAdapter.delete(position) }
+        alertDialog.setPositiveButton("Өчүрүү") { _, _ ->
+            noteAdapter.delete(position)
+            checkItem()
+        }
         alertDialog.setNegativeButton("Токтотуу", null)
         alertDialog.show()
     }
@@ -90,10 +98,7 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
         val bundle = Bundle()
         bundle.putSerializable("editNote", note)
         bundle.putInt("position", position)
-        val addFragment = AddFragment()
-        addFragment.arguments = bundle
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.main_fragment_container, addFragment).addToBackStack(null).commit()
+        findNavController().navigate(R.id.addFragment, bundle)
     }
 
     override fun onCreateView(

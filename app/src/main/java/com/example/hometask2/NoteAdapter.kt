@@ -32,6 +32,11 @@ class NoteAdapter(private val listener: MainFragment) :
         notifyItemChanged(position)
     }
 
+    fun sortByDate() {
+        this.list.sortBy { note -> note.date }
+        notifyDataSetChanged()
+    }
+
     interface IOnItem {
         fun delete(position: Int)
         fun share(position: Int)

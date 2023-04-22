@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import java.io.IOException
 
 @Suppress("DEPRECATION")
@@ -74,10 +75,7 @@ class AddFragment : Fragment() {
             }
         }
         back.setOnClickListener {
-            val mainFragment = MainFragment()
-            val fragmentManager: FragmentManager = parentFragmentManager
-            fragmentManager.beginTransaction().replace(R.id.add_fragment_container, mainFragment)
-                .addToBackStack(null).commit()
+            findNavController().navigate(R.id.mainFragment)
         }
     }
 
@@ -104,16 +102,6 @@ class AddFragment : Fragment() {
                 e.printStackTrace()
                 imageUrl = data.data.toString()
             }
-        }
-    }
-
-    companion object {
-        fun newInstance(searchText: String): Fragment {
-            val addFragment = AddFragment()
-            val bundle = Bundle()
-            bundle.putString("searchText", searchText)
-            addFragment.arguments = bundle
-            return addFragment
         }
     }
 }
