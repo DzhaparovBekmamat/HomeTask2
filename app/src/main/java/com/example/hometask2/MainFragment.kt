@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hometask2.databinding.FragmentMainBinding
 
 @Suppress("DEPRECATION")
 class MainFragment : Fragment(), NoteAdapter.IOnItem {
@@ -22,15 +23,16 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
     private lateinit var sort: Button
     private lateinit var textView: TextView
     private lateinit var editText: EditText
+    private lateinit var binding: FragmentMainBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        textView = view.findViewById(R.id.nothing_found)
-        recyclerView = view.findViewById(R.id.recyclerView)
-        add = view.findViewById(R.id.button_add)
-        sort = view.findViewById(R.id.button_sort)
+        textView = binding.nothingFound
+        recyclerView = binding.recyclerView
+        add = binding.buttonAdd
+        sort = binding.buttonSort
         noteAdapter = NoteAdapter(this)
-        editText = view.findViewById(R.id.search_edit_text)
-        recyclerView.adapter = noteAdapter
+        editText = binding.searchEditText
+        binding.recyclerView.adapter = noteAdapter
         noteAdapter.setList((requireActivity() as MainActivity).list)
         requireActivity().supportFragmentManager.setFragmentResultListener(
             "note", this
@@ -47,20 +49,28 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
             noteAdapter.change(pos, note)
             checkItem()
         }
-        sort.setOnClickListener {
-            val searchText = editText.text.toString()
-            val bundle = Bundle()
-            bundle.putString("searchText", searchText)
-            findNavController().navigate(R.id.addFragment, bundle)
+        binding.buttonSort.setOnClickListener {
+            val alertDialog = AlertDialog.Builder(requireContext(), R.style.MyAlertDialogStyle)
+            alertDialog.setTitle("Эскертүү !")
+            alertDialog.setMessage("Алардын бирин тандан !")
+            alertDialog.setPositiveButton("Аталышы") { _, _ ->
+                noteAdapter.sortByTitle()
+            }
+            alertDialog.setNegativeButton(
+                "Датасы"
+            ) { _, _ ->
+                noteAdapter.sortByDate()
+            }
+            alertDialog.show()
         }
-        add.setOnClickListener {
+        binding.buttonAdd.setOnClickListener {
             findNavController().navigate(R.id.addFragment)
         }
         checkItem()
     }
 
     private fun checkItem() {
-        val itemCount = noteAdapter.itemCount ?: 0
+        val itemCount = noteAdapter.itemCount
         if (itemCount == 0) {
             textView.visibility = View.VISIBLE
         } else {
@@ -68,13 +78,8 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
         }
     }
 
-    private fun getSearchText(): String {
-        val searchEditText: EditText = requireView().findViewById(R.id.search_edit_text)
-        return searchEditText.text.toString()
-    }
-
     override fun delete(position: Int) {
-        val alertDialog = AlertDialog.Builder(requireContext())
+        val alertDialog = AlertDialog.Builder(requireContext(), R.style.MyAlertDialogStyle)
         alertDialog.setTitle("Эскертүү!")
         alertDialog.setMessage("Чын эле жок кылгыңыз келеби?")
         alertDialog.setPositiveButton("Өчүрүү") { _, _ ->
@@ -88,6 +93,12 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
     override fun share(position: Int) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
+//        val addFragment = fragmentManager?.findFragmentByTag("AddFragment") as AddFragment
+//        val editText1 = addFragment.view?.findViewById<EditText>(R.id.first_edit_text_add_fragment)
+//        val editText2 = addFragment.view?.findViewById<EditText>(R.id.second_edit_text_add_fragment)
+//        val editText3 = addFragment.view?.findViewById<EditText>(R.id.third_edit_text_add_fragment_date_picker)
+//        val imageView = addFragment.view?.findViewById<EditText>(R.id.image_view_add_fragment)
+//        val note = Note(imageView, editText1)
         val noteText = "Эскертүүнүн тексти"
         intent.putExtra(Intent.EXTRA_TEXT, noteText)
         startActivity(Intent.createChooser(intent, "Эскертүүнү бөлүшүү"))
@@ -103,7 +114,8 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
+        binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 }

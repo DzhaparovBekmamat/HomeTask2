@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
+import com.example.hometask2.databinding.FragmentAddBinding
 import java.io.IOException
 import java.util.Calendar
 
@@ -23,24 +24,26 @@ class AddFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 1
     private lateinit var imageView: ImageView
     private var imageUrl: String? = null
+    private lateinit var binding: FragmentAddBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_add, container, false)
+        binding = FragmentAddBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val back: Button = view.findViewById(R.id.back)
-        val button: Button = view.findViewById(R.id.button_add_fragment)
-        val title: EditText = view.findViewById(R.id.first_edit_text_add_fragment)
-        val description: EditText = view.findViewById(R.id.second_edit_text_add_fragment)
-        val date: EditText = view.findViewById(R.id.third_edit_text_add_fragment_date_picker)
-        date.setOnClickListener {
+        val back: Button = binding.back
+        val button: Button = binding.buttonAddFragment
+        val title: EditText = binding.firstEditTextAddFragment
+        val description: EditText = binding.secondEditTextAddFragment
+        val date: EditText = binding.thirdEditTextAddFragmentDatePicker
+        binding.thirdEditTextAddFragmentDatePicker.setOnClickListener {
             showDatePickerDialog()
         }
-        imageView = view.findViewById(R.id.image_view_add_fragment)
+        imageView = binding.imageViewAddFragment
         pickImageFromGallery()
         val bundle = Bundle()
         if (arguments != null && arguments?.getSerializable("searchText") != null) {
@@ -54,7 +57,7 @@ class AddFragment : Fragment() {
             title.setText(note.title)
             description.setText(note.description)
             date.setText(note.date)
-            button.setOnClickListener {
+            binding.buttonAddFragment.setOnClickListener {
                 val titleString = title.text.toString()
                 val descriptionString = description.text.toString()
                 val dateString = date.text.toString()
@@ -69,7 +72,7 @@ class AddFragment : Fragment() {
                 }
             }
         } else {
-            button.setOnClickListener {
+            binding.buttonAddFragment.setOnClickListener {
                 val titleString = title.text.toString()
                 val descriptionString = description.text.toString()
                 val dateString = date.text.toString()
@@ -79,7 +82,7 @@ class AddFragment : Fragment() {
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
-        back.setOnClickListener {
+        binding.back.setOnClickListener {
             findNavController().navigate(R.id.mainFragment)
         }
     }
@@ -90,22 +93,18 @@ class AddFragment : Fragment() {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            { _, yearSelected, monthSelected, dayOfMonth ->
+            requireContext(), { _, yearSelected, monthSelected, dayOfMonth ->
                 val selectedDate = "$dayOfMonth/${monthSelected + 1}/$yearSelected"
-                val date = requireActivity().findViewById<EditText>(R.id.third_edit_text_add_fragment_date_picker)
+                val date = binding.thirdEditTextAddFragmentDatePicker
                 date.setText(selectedDate)
-            },
-            year,
-            month,
-            day
+            }, year, month, day
         )
         datePickerDialog.show()
     }
 
     @SuppressLint("IntentReset")
     private fun pickImageFromGallery() {
-        imageView.setOnClickListener {
+        binding.imageViewAddFragment.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = "image/*"
             startActivityForResult(intent, PICK_IMAGE_REQUEST)

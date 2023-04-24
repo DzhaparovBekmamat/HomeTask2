@@ -2,7 +2,6 @@ package com.example.hometask2
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
@@ -11,10 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.hometask2.databinding.NoteListBinding
 
 class NoteAdapter(private val listener: MainFragment) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
     private val list: MutableList<Note> = ArrayList()
+    private lateinit var binding: NoteListBinding
+    fun getContext(position: Int, note: Note) {
+        list[position] = note
+        notifyItemChanged(position)
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun addNote(note: Note) {
@@ -32,8 +37,15 @@ class NoteAdapter(private val listener: MainFragment) :
         notifyItemChanged(position)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun sortByDate() {
         this.list.sortBy { note -> note.date }
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun sortByTitle() {
+        this.list.sortBy { note -> note.title }
         notifyDataSetChanged()
     }
 
@@ -44,8 +56,8 @@ class NoteAdapter(private val listener: MainFragment) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.note_list, parent, false)
-        return ViewHolder(view)
+        val binding = NoteListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -63,14 +75,14 @@ class NoteAdapter(private val listener: MainFragment) :
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imageView: ImageView = view.findViewById(R.id.image_view_note_list)
-        private val title: TextView = view.findViewById(R.id.title_note_list)
-        private val description: TextView = view.findViewById(R.id.description_note_list)
-        private val date: TextView = view.findViewById(R.id.date_note_list)
-        private val delete: Button = view.findViewById(R.id.button_remove)
-        private val editButton: Button = view.findViewById(R.id.button_edit)
-        private val share: Button = view.findViewById(R.id.button_share)
+    inner class ViewHolder(binding: NoteListBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val imageView: ImageView = binding.imageViewNoteList
+        private val title: TextView = binding.titleNoteList
+        private val description: TextView = binding.descriptionNoteList
+        private val date: TextView = binding.dateNoteList
+        private val delete: Button = binding.buttonRemove
+        private val editButton: Button = binding.buttonEdit
+        private val share: Button = binding.buttonShare
         fun bind(position: Int) {
             title.text = list[position].title
             description.text = list[position].description
