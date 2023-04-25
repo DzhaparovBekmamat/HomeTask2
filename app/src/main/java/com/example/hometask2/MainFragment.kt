@@ -94,8 +94,7 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
         val note = noteAdapter.getList()[position]
-        val noteText =
-            note.title + " " + note.description + " " + note.date
+        val noteText = note.title + " " + note.description + " " + note.date
         intent.putExtra(Intent.EXTRA_TEXT, noteText)
         startActivity(Intent.createChooser(intent, "Эскертүү менен бөлүшүү"))
     }
