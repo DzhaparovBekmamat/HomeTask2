@@ -16,16 +16,14 @@ class NoteAdapter(private val listener: MainFragment) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
     private val list: MutableList<Note> = ArrayList()
     private lateinit var binding: NoteListBinding
-    fun getContext(position: Int, note: Note) {
-        list[position] = note
-        notifyItemChanged(position)
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun addNote(note: Note) {
         list.add(note)
         notifyDataSetChanged()
     }
+
+    fun getList() = list
 
     fun delete(position: Int) {
         list.removeAt(position)

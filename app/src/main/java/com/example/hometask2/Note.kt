@@ -1,6 +1,5 @@
 package com.example.hometask2
 
-import android.widget.EditText
 import java.io.Serializable
 
 /**

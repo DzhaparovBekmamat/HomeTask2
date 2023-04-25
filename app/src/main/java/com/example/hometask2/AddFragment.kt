@@ -6,18 +6,17 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.hometask2.databinding.FragmentAddBinding
 import java.io.IOException
-import java.util.Calendar
+import java.util.*
 
 @Suppress("DEPRECATION")
 class AddFragment : Fragment() {
@@ -27,7 +26,7 @@ class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAddBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,7 +34,7 @@ class AddFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val back: Button = binding.back
+        binding.back
         val button: Button = binding.buttonAddFragment
         val title: EditText = binding.firstEditTextAddFragment
         val description: EditText = binding.secondEditTextAddFragment

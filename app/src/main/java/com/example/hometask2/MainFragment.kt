@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hometask2.databinding.FragmentMainBinding
@@ -93,15 +93,11 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
     override fun share(position: Int) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
-//        val addFragment = fragmentManager?.findFragmentByTag("AddFragment") as AddFragment
-//        val editText1 = addFragment.view?.findViewById<EditText>(R.id.first_edit_text_add_fragment)
-//        val editText2 = addFragment.view?.findViewById<EditText>(R.id.second_edit_text_add_fragment)
-//        val editText3 = addFragment.view?.findViewById<EditText>(R.id.third_edit_text_add_fragment_date_picker)
-//        val imageView = addFragment.view?.findViewById<EditText>(R.id.image_view_add_fragment)
-//        val note = Note(imageView, editText1)
-        val noteText = "Эскертүүнүн тексти"
+        val note = noteAdapter.getList()[position]
+        val noteText =
+            note.title + " " + note.description + " " + note.date
         intent.putExtra(Intent.EXTRA_TEXT, noteText)
-        startActivity(Intent.createChooser(intent, "Эскертүүнү бөлүшүү"))
+        startActivity(Intent.createChooser(intent, "Эскертүү менен бөлүшүү"))
     }
 
     @SuppressLint("CommitTransaction")
