@@ -61,8 +61,7 @@ class AddFragment : Fragment() {
                 val descriptionString = description.text.toString()
                 val dateString = date.text.toString()
                 val edit = Note(imageUrl, titleString, descriptionString, dateString)
-                (requireActivity() as MainActivity).list.add(note)
-                bundle.putSerializable("edit", edit)
+                (requireActivity() as MainActivity).list.add(edit)
                 val pos = arguments?.getInt("position")
                 if (pos != null) {
                     bundle.putInt("pos", pos)
