@@ -3,9 +3,6 @@ package com.example.hometask2
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -14,25 +11,19 @@ import com.example.hometask2.databinding.NoteListBinding
 
 class NoteAdapter(private val listener: MainFragment) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
-    private val list: MutableList<Note> = ArrayList()
-    private lateinit var binding: NoteListBinding
+    private var list: MutableList<Note> = ArrayList()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addNote(note: Note) {
-        list.add(note)
+    fun addNote(list: ArrayList<Note>) {
+        this.list = list
         notifyDataSetChanged()
     }
 
     fun getList() = list
 
     fun delete(position: Int) {
-        list.removeAt(position)
+        App.db.getDao().deleteNote(list.removeAt(position))
         notifyItemRemoved(position)
-    }
-
-    fun change(position: Int, note: Note) {
-        list[position] = note
-        notifyItemChanged(position)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -53,50 +44,38 @@ class NoteAdapter(private val listener: MainFragment) :
         fun edit(position: Int, note: Note)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NoteListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
+        NoteListBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+    )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(position)
+        holder.bind(list[position])
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount() = list.size
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: MutableList<Note>) {
-        this.list.clear()
-        this.list.addAll(list)
-        notifyDataSetChanged()
-    }
-
-    inner class ViewHolder(binding: NoteListBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val imageView: ImageView = binding.imageViewNoteList
-        private val title: TextView = binding.titleNoteList
-        private val description: TextView = binding.descriptionNoteList
-        private val date: TextView = binding.dateNoteList
-        private val delete: Button = binding.buttonRemove
-        private val editButton: Button = binding.buttonEdit
-        private val share: Button = binding.buttonShare
-        fun bind(position: Int) {
-            title.text = list[position].title
-            description.text = list[position].description
-            date.text = list[position].date
-            Glide.with(itemView).load(list[position].photoResource)
-                .transform(CenterCrop(), RoundedCorners(25)).into(imageView)
-            delete.setOnClickListener {
+    @SuppressLint("ClickableViewAccessibility")
+    inner class ViewHolder(private val binding: NoteListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(model: Note) {
+            binding.titleNoteList.text = model.title
+            binding.descriptionNoteList.text = model.description
+            binding.dateNoteList.text = model.date
+            Glide.with(itemView).load(model.photoResource)
+                .transform(CenterCrop(), RoundedCorners(25)).into(binding.imageViewNoteList)
+            binding.buttonRemove.setOnClickListener {
                 listener.delete(adapterPosition)
             }
-            editButton.setOnClickListener {
-                listener.edit(position, list[position])
+            binding.buttonEdit.setOnClickListener {
+                listener.edit(adapterPosition, model)
             }
-            share.setOnClickListener {
+            binding.buttonShare.setOnClickListener {
                 listener.share(adapterPosition)
             }
         }
     }
 }
+
 

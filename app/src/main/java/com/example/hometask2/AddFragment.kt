@@ -60,9 +60,13 @@ class AddFragment : Fragment() {
                 val titleString = title.text.toString()
                 val descriptionString = description.text.toString()
                 val dateString = date.text.toString()
-                val edit = Note(imageUrl, titleString, descriptionString, dateString)
-                (requireActivity() as MainActivity).list.add(note)
-                bundle.putSerializable("edit", edit)
+                val edit = Note(
+                    photoResource = imageUrl,
+                    title = titleString,
+                    description = descriptionString,
+                    date = dateString
+                )
+                (requireActivity() as MainActivity).list.add(edit)
                 val pos = arguments?.getInt("position")
                 if (pos != null) {
                     bundle.putInt("pos", pos)
@@ -75,14 +79,18 @@ class AddFragment : Fragment() {
                 val titleString = title.text.toString()
                 val descriptionString = description.text.toString()
                 val dateString = date.text.toString()
-                val edit = Note(imageUrl, titleString, descriptionString, dateString)
-                bundle.putSerializable("model", edit)
-                requireActivity().supportFragmentManager.setFragmentResult("note", bundle)
-                requireActivity().supportFragmentManager.popBackStack()
+                val edit = Note(
+                    photoResource = imageUrl,
+                    title = titleString,
+                    description = descriptionString,
+                    date = dateString
+                )
+                App.db.getDao().addNote(edit)
+                findNavController().navigateUp()
             }
         }
         binding.back.setOnClickListener {
-            findNavController().navigate(R.id.mainFragment)
+            findNavController().navigateUp()
         }
     }
 
@@ -109,7 +117,6 @@ class AddFragment : Fragment() {
             startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
     }
-
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
