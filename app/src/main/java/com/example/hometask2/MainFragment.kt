@@ -22,13 +22,13 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
         noteAdapter.addNote(App.db.getDao().getAllNote() as ArrayList<Note>)
         binding.buttonSort.setOnClickListener {
             val alertDialog = AlertDialog.Builder(requireContext(), R.style.MyAlertDialogStyle)
-            alertDialog.setTitle("Эскертүү !")
-            alertDialog.setMessage("Алардын бирин тандан !")
-            alertDialog.setPositiveButton("Аталышы") { _, _ ->
+            alertDialog.setTitle("Внимание!")
+            alertDialog.setMessage("Выбери один из них")
+            alertDialog.setPositiveButton("Название") { _, _ ->
                 noteAdapter.sortByTitle()
             }
             alertDialog.setNegativeButton(
-                "Датасы"
+                "Дата"
             ) { _, _ ->
                 noteAdapter.sortByDate()
             }
@@ -51,13 +51,13 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
 
     override fun delete(position: Int) {
         val alertDialog = AlertDialog.Builder(requireContext(), R.style.MyAlertDialogStyle)
-        alertDialog.setTitle("Эскертүү!")
-        alertDialog.setMessage("Чын эле жок кылгыңыз келеби?")
-        alertDialog.setPositiveButton("Өчүрүү") { _, _ ->
+        alertDialog.setTitle("Внимание!")
+        alertDialog.setMessage("Вы действительно хотите удалить?")
+        alertDialog.setPositiveButton("Удалить") { _, _ ->
             noteAdapter.delete(position)
             checkItem()
         }
-        alertDialog.setNegativeButton("Токтотуу", null)
+        alertDialog.setNegativeButton("Отмена", null)
         alertDialog.show()
     }
 
@@ -68,7 +68,7 @@ class MainFragment : Fragment(), NoteAdapter.IOnItem {
         val noteText = note.title + "\n" + note.description + "\n" + note.date
         intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(note.photoResource))
         intent.putExtra(Intent.EXTRA_TEXT, noteText)
-        startActivity(Intent.createChooser(intent, "Эскертүү менен бөлүшүү"))
+        startActivity(Intent.createChooser(intent, "Поделиться заметкой"))
     }
 
     @SuppressLint("CommitTransaction")
