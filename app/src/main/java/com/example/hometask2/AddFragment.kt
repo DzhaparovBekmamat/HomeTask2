@@ -41,10 +41,10 @@ class AddFragment : Fragment() {
         if (arguments != null && arguments?.getSerializable("searchText") != null) {
             val text = arguments?.getString("searchText")
             binding.firstEditTextAddFragment.setText(text)
-            binding.buttonAddFragment.text = "Түзөтүү"
+            binding.buttonAddFragment.text = "Редактировать"
         }
         if (arguments != null && arguments?.getSerializable("editNote") != null) {
-            binding.buttonAddFragment.text = "Edit"
+            binding.buttonAddFragment.text = "Редактировать"
             val note = arguments?.getSerializable("editNote") as Note
             binding.firstEditTextAddFragment.setText(note.title)
             binding.secondEditTextAddFragment.setText(note.description)
@@ -90,15 +90,15 @@ class AddFragment : Fragment() {
 
     private fun checkAllFields(): Boolean {
         if (binding.firstEditTextAddFragment.length() == 0) {
-            binding.firstEditTextAddFragment.error = "THIS FIELD IS REQUIRED"
+            binding.firstEditTextAddFragment.error = "Это поле обязательно к заполнению"
             return false
         }
         if (binding.secondEditTextAddFragment.length() == 0) {
-            binding.secondEditTextAddFragment.error = "THIS FIELD IS REQUIRED"
+            binding.secondEditTextAddFragment.error = "Это поле обязательно к заполнению"
             return false
         }
         if (binding.thirdEditTextAddFragmentDatePicker.length() == 0) {
-            binding.thirdEditTextAddFragmentDatePicker.error = "THIS FIELD IS REQUIRED"
+            binding.thirdEditTextAddFragmentDatePicker.error = "Это поле обязательно к заполнению"
             return false
         }
         if (binding.imageViewAddFragment.drawable == null) {
